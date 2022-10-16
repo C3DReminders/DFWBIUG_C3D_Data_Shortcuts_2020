@@ -85,6 +85,7 @@
     <!--AME Reference End-->
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -100,6 +101,8 @@
     </Compile>
     <Compile Include="DFWBIUG_Data_Shortcut_Plugin.cs" />
     <Compile Include="DFWBIUG_DataShortcuts\DFWBIUG_DataShortcutCommands.cs" />
+    <Compile Include="DFWBIUG_TransientImage\DFWBIUG_ImageTransient.cs" />
+    <Compile Include="DFWBIUG_TransientImage\DFWBIUG_ImageTransientCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

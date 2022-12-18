@@ -67,7 +67,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="AecBaseMgd">
-      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files\Autodesk\AutoCAD 2020\ACA\AecBaseMgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="AeccDataShortcutMgd, Version=13.4.214.0, Culture=neutral, processorArchitecture=AMD64">
@@ -86,14 +86,16 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="CorridorFeatureLines\CorridorFeatureLinesCommand.cs" />
+    <Compile Include="CorridorFeatureLines\SurfaceInformation.cs" />
     <Compile Include="DFWBIUG_DataShortcuts\DFWBIUG_DataShortcutCommands.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -104,6 +106,7 @@
     <Compile Include="DFWBIUG_TransientImage\DFWBIUG_ImageTransient.cs" />
     <Compile Include="DFWBIUG_TransientImage\DFWBIUG_ImageTransientCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StyleColors\StyleColorsCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DFWBIUG_DataShortcuts\DFWBIUG_DataShortcutCommands.resx">

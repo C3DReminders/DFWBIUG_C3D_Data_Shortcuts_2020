@@ -79,6 +79,7 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <!--ACA References Begin-->
     <!--ACA Refences End-->
     <!--AME Referebces Begin-->
@@ -105,6 +106,14 @@
     <Compile Include="DFWBIUG_DataShortcuts\DFWBIUG_DataShortcutCommands.cs" />
     <Compile Include="DFWBIUG_TransientImage\DFWBIUG_ImageTransient.cs" />
     <Compile Include="DFWBIUG_TransientImage\DFWBIUG_ImageTransientCommand.cs" />
+    <Compile Include="OpenDatabases\BatchDwgProcessing\C3DRCoreConsoleWorker.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="OpenDatabases\BatchDwgProcessing\C3DRDwgError.cs" />
+    <Compile Include="OpenDatabases\BatchDwgProcessing\C3DRLockedSettings.cs" />
+    <Compile Include="OpenDatabases\BatchDwgProcessing\C3DRWorkInformation.cs" />
+    <Compile Include="OpenDatabases\OpenDatabasesCommand.cs" />
+    <Compile Include="OpenDatabases\OpenDatabasesCoreConsoleCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StyleColors\StyleColorsCommand.cs" />
   </ItemGroup>

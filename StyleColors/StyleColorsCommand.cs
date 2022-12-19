@@ -1,4 +1,6 @@
-﻿using Autodesk.AutoCAD.ApplicationServices;
+﻿// This code derives code gotten at DevCamp 2010 as sample code.
+
+using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.Civil.ApplicationServices;
@@ -92,6 +94,7 @@ namespace DFWBIUG_C3D_Data_Shortcuts_2020
                 saveDialog.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
 
                 saveDialog.InitialDirectory = settingsFileLocation;
+                saveDialog.FileName = fileName;
 
                 if (saveDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {

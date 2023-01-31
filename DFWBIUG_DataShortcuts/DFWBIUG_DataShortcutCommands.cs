@@ -5,6 +5,7 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Runtime;
+using Autodesk.Civil.DatabaseServices;
 using Autodesk.Civil.DataShortcuts;
 using System;
 using System.Collections.Generic;
@@ -328,6 +329,56 @@ namespace DFWBIUG_C3D_Data_Shortcuts_2022
 
                 // Update the shortcut node.
                 Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.SendStringToExecute("REFRESHSHORTCUTNODE ", false, false, false);
+            }
+            catch (System.Exception ex)
+            {
+                ed.WriteMessage("Error: " + ex.Message);
+            }
+        }
+
+        [CommandMethod("DFWBIUG", "GetDSInfo", "GetDSInfo", CommandFlags.Modal)]
+        public void GetDSInfoCommand() // This method can have any name
+        {
+            // Put your command code here
+            Document doc = Application.DocumentManager.MdiActiveDocument;
+            var db = doc.Database;
+            if (doc == null)
+            {
+                return;
+            }
+
+            var ed = doc.Editor;
+
+            try
+            {
+                var entRslt = ed.GetEntity("Select Civil 3D object: ");
+
+                if (entRslt.Status != PromptStatus.OK)
+                {
+                    ed.WriteMessage("No object selected!\n");
+                    return;
+                }
+
+                using (var tr = db.TransactionManager.StartTransaction())
+                {
+                    var obj = entRslt.ObjectId.GetObject(OpenMode.ForRead) as Autodesk.Civil.DatabaseServices.Entity;
+
+                    if (obj is null)
+                    {
+                        ed.WriteMessage("Not a Civil 3D object selected!\n");
+                        return;
+                    }
+
+                    var dsInfo = obj.GetReferenceInfo();
+
+                    ed.WriteMessage("IsSourceDrawingExistent: " + dsInfo.IsSourceDrawingExistent + "\n");
+                    ed.WriteMessage("SourceDrawing: " + dsInfo.SourceDrawing + "\n");
+                    ed.WriteMessage("HandleHigh: " + dsInfo.HandleHigh + "\n");
+                    ed.WriteMessage("HandleLow" + dsInfo.HandleLow + "\n");
+                    ed.WriteMessage("Type" + dsInfo.Type + "\n");
+
+                    tr.Commit();
+                }
             }
             catch (System.Exception ex)
             {

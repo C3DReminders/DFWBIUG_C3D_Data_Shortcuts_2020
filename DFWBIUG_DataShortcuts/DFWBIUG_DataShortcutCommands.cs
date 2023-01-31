@@ -374,8 +374,8 @@ namespace DFWBIUG_C3D_Data_Shortcuts_2022
                     ed.WriteMessage("IsSourceDrawingExistent: " + dsInfo.IsSourceDrawingExistent + "\n");
                     ed.WriteMessage("SourceDrawing: " + dsInfo.SourceDrawing + "\n");
                     ed.WriteMessage("HandleHigh: " + dsInfo.HandleHigh + "\n");
-                    ed.WriteMessage("HandleLow" + dsInfo.HandleLow + "\n");
-                    ed.WriteMessage("Type" + dsInfo.Type + "\n");
+                    ed.WriteMessage("HandleLow: " + dsInfo.HandleLow + "\n");
+                    ed.WriteMessage("Type: " + dsInfo.Type + "\n");
 
                     tr.Commit();
                 }

@@ -5,7 +5,7 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFWBIUG_C3D_Data_Shortcuts_2020", "DFWBIUG_C3D_Data_Shortcuts_2020.csproj", "{2AE9241C-99E2-4CB9-92F0-5424C8054DCD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIMDemo", "..\BIMDemo\BIMDemo.csproj", "{B6B2AB7F-F9C0-4F4E-B270-FA24058BEAD9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIMDemo", "BIMDemo\BIMDemo.csproj", "{B6B2AB7F-F9C0-4F4E-B270-FA24058BEAD9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometryExtensionsR25", "..\..\Gile\GeometryExtensions\GeometryExtensionsR25\GeometryExtensionsR25.csproj", "{9E71D40D-108E-47FA-B689-709838574BED}"
 EndProject

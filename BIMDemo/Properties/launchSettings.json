@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BIMDemo": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Users\\chris\\source\\repos\\C3DReminders\\BIMDemo\\TestDrawing\\TestDrawing.dwg\""
+    }
+  }
+}

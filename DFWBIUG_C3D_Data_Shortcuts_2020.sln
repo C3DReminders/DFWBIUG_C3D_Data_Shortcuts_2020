@@ -1,20 +1,54 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31727.386
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFWBIUG_C3D_Data_Shortcuts_2020", "DFWBIUG_C3D_Data_Shortcuts_2020.csproj", "{2AE9241C-99E2-4CB9-92F0-5424C8054DCD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIMDemo", "..\BIMDemo\BIMDemo.csproj", "{B6B2AB7F-F9C0-4F4E-B270-FA24058BEAD9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometryExtensionsR25", "..\..\Gile\GeometryExtensions\GeometryExtensionsR25\GeometryExtensionsR25.csproj", "{9E71D40D-108E-47FA-B689-709838574BED}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gile.AutoCAD.R25.Extension", "..\..\Gile\Gile.AutoCAD.Extension\Gile.AutoCAD.R25.Extension\Gile.AutoCAD.R25.Extension.csproj", "{20F175A5-47BF-461F-A858-06CE7B33D612}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
 		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{2AE9241C-99E2-4CB9-92F0-5424C8054DCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2AE9241C-99E2-4CB9-92F0-5424C8054DCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AE9241C-99E2-4CB9-92F0-5424C8054DCD}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{2AE9241C-99E2-4CB9-92F0-5424C8054DCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AE9241C-99E2-4CB9-92F0-5424C8054DCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AE9241C-99E2-4CB9-92F0-5424C8054DCD}.Release|x64.ActiveCfg = Release|Any CPU
+		{B6B2AB7F-F9C0-4F4E-B270-FA24058BEAD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6B2AB7F-F9C0-4F4E-B270-FA24058BEAD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6B2AB7F-F9C0-4F4E-B270-FA24058BEAD9}.Debug|x64.ActiveCfg = Debug|x64
+		{B6B2AB7F-F9C0-4F4E-B270-FA24058BEAD9}.Debug|x64.Build.0 = Debug|x64
+		{B6B2AB7F-F9C0-4F4E-B270-FA24058BEAD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6B2AB7F-F9C0-4F4E-B270-FA24058BEAD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6B2AB7F-F9C0-4F4E-B270-FA24058BEAD9}.Release|x64.ActiveCfg = Release|x64
+		{B6B2AB7F-F9C0-4F4E-B270-FA24058BEAD9}.Release|x64.Build.0 = Release|x64
+		{9E71D40D-108E-47FA-B689-709838574BED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E71D40D-108E-47FA-B689-709838574BED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E71D40D-108E-47FA-B689-709838574BED}.Debug|x64.ActiveCfg = Debug|x64
+		{9E71D40D-108E-47FA-B689-709838574BED}.Debug|x64.Build.0 = Debug|x64
+		{9E71D40D-108E-47FA-B689-709838574BED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E71D40D-108E-47FA-B689-709838574BED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E71D40D-108E-47FA-B689-709838574BED}.Release|x64.ActiveCfg = Release|x64
+		{9E71D40D-108E-47FA-B689-709838574BED}.Release|x64.Build.0 = Release|x64
+		{20F175A5-47BF-461F-A858-06CE7B33D612}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20F175A5-47BF-461F-A858-06CE7B33D612}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20F175A5-47BF-461F-A858-06CE7B33D612}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{20F175A5-47BF-461F-A858-06CE7B33D612}.Debug|x64.Build.0 = Debug|Any CPU
+		{20F175A5-47BF-461F-A858-06CE7B33D612}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20F175A5-47BF-461F-A858-06CE7B33D612}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20F175A5-47BF-461F-A858-06CE7B33D612}.Release|x64.ActiveCfg = Release|Any CPU
+		{20F175A5-47BF-461F-A858-06CE7B33D612}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

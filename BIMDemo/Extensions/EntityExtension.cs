@@ -1,4 +1,5 @@
 ﻿using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.Geometry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,38 @@ namespace BIMDemo.Extensions
             }
 
             return true;
+        }
+
+        public static bool TryGetIntersectionPoints(this Entity ent, Entity other, out Point3dCollection intersectPts)
+        {
+            intersectPts = new Point3dCollection();
+            var oPtr = new IntPtr();
+            var planeXY = new Plane();
+
+            ent.IntersectWith(other, Intersect.OnBothOperands, planeXY, intersectPts, oPtr, oPtr);
+
+            return intersectPts.Count > 0;
+        }
+
+        public static ObjectId AddToModelSpace(this Entity ent)
+        {
+            var objId = ObjectId.Null;
+            var db = HostApplicationServices.WorkingDatabase;
+
+            using (var tr = db.TransactionManager.StartTransaction())
+            {
+                BlockTable acBlkTbl = tr.GetObject(db.BlockTableId, OpenMode.ForRead) as BlockTable;
+
+                // Open the Block table record Model space for write
+                BlockTableRecord acBlkTblRec = acBlkTbl[BlockTableRecord.ModelSpace].GetObject(OpenMode.ForWrite) as BlockTableRecord;
+
+                objId = acBlkTblRec.AppendEntity(ent);
+                tr.AddNewlyCreatedDBObject(ent, true);
+
+                tr.Commit();
+            }
+
+            return objId;
         }
     }
 }

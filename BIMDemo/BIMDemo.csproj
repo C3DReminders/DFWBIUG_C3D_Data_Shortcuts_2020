@@ -19,8 +19,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Gile\GeometryExtensions\GeometryExtensionsR25\GeometryExtensionsR25.csproj" />
-	  <ProjectReference Include="..\..\Gile\Gile.AutoCAD.Extension\Gile.AutoCAD.R25.Extension\Gile.AutoCAD.R25.Extension.csproj" />
+	  <ProjectReference Include="..\..\..\Gile\GeometryExtensions\GeometryExtensionsR25\GeometryExtensionsR25.csproj" />
+	  <ProjectReference Include="..\..\..\Gile\Gile.AutoCAD.Extension\Gile.AutoCAD.R25.Extension\Gile.AutoCAD.R25.Extension.csproj" />
 	</ItemGroup>
 
   <ItemGroup>

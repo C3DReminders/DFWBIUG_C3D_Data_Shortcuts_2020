@@ -50,4 +50,8 @@
     </Reference>
   </ItemGroup>
 
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="if $(ConfigurationName) == Debug copy /Y &quot;$(TargetDir)*&quot; &quot;C:\ProgramData\Autodesk\ApplicationPlugins\BIMDemo.Bundle\2025\&quot;&#xD;&#xA;if $(ConfigurationName) == Release copy /Y &quot;$(TargetDir)*&quot; &quot;C:\Users\chris\Dropbox\CivilReminders\Apps-C3DR\BIMDemo\BIMDemo.Bundle\2025\&quot;" />
+	</Target>
+	
 </Project>

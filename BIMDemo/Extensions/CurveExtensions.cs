@@ -1,5 +1,7 @@
 ﻿using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
+using Autodesk.Civil.DatabaseServices;
+using BIMDemo.Extensions.Featurelines;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +31,58 @@ namespace BIMDemo.Extensions
 
             return closestPt;
 
+        }
+
+        public static Polyline ToPolyline(this Curve curve)
+        {
+            Polyline poly;
+
+            poly = curve as Polyline;
+            if (poly != null)
+            {
+                return poly;
+            }
+
+            if (curve is FeatureLine fl)
+            {
+                var flCurve = fl.GetFlatCurve();
+
+                return flCurve.ToPolyline();
+            }
+
+            if (curve is Polyline2d)
+            {
+                var poly2d = curve as Polyline2d;
+                var copyPoly2d = poly2d.Clone() as Polyline2d;
+                poly = new Polyline();
+                poly.ConvertFrom(copyPoly2d, false);
+                return poly;
+            }
+
+            if (curve is Polyline3d)
+            {
+                var poly3d = curve as Polyline3d;
+                poly = new Polyline();
+                var currentVertex = 0;
+                foreach (ObjectId vId in poly3d)
+                {
+                    PolylineVertex3d v3d = vId.GetObject(OpenMode.ForRead) as PolylineVertex3d;
+
+                    poly.AddVertexAt(currentVertex, v3d.Position.ToPoint2d(), 0, 0, 0);
+                }
+                return poly;
+            }
+
+            return poly;
+        }
+
+        public static DoubleCollection GetParamsAtPoints(this Curve curve, Point3dCollection intersectPts)
+        {
+            return new DoubleCollection(intersectPts.Cast<Point3d>()
+                               .Select(p => curve.GetParameterAtPoint(curve.GetClosestPointToProjected(p)))
+                               .Where(d => d > curve.StartParam && d < curve.EndParam)
+                               .OrderBy(d => d)
+                               .ToArray());
         }
     }
 }

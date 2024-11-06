@@ -2,7 +2,7 @@
   "profiles": {
     "BIMDemo": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:\\Users\\chris\\source\\repos\\C3DReminders\\BIMDemo\\TestDrawing\\TestDrawing.dwg\""
+      "commandLineArgs": "\"C:\\Users\\chris\\Dropbox\\CivilReminders\\SwiftPartners\\Recieved\\2024-11-04\\ACAD2010.dwg\""
     }
   }
 }

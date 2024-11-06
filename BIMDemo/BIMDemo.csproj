@@ -10,6 +10,8 @@
 	  <Platforms>AnyCPU;x64</Platforms>
 
 	  <Nullable>disable</Nullable>
+
+	  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -19,8 +21,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.10" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ProjectReference Include="..\..\..\Gile\GeometryExtensions\GeometryExtensionsR25\GeometryExtensionsR25.csproj" />
 	  <ProjectReference Include="..\..\..\Gile\Gile.AutoCAD.Extension\Gile.AutoCAD.R25.Extension\Gile.AutoCAD.R25.Extension.csproj" />
+	  <ProjectReference Include="..\..\..\SincPac_FreeEdition\AcadUtilities\AcadUtilities2020.csproj" />
 	</ItemGroup>
 
   <ItemGroup>

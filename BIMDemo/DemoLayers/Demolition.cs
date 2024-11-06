@@ -5,6 +5,7 @@ using Autodesk.AutoCAD.Runtime;
 using Autodesk.Civil.DatabaseServices;
 using BIMDemo.Extensions;
 using BIMDemo.Extensions.Featurelines;
+using BIMDemo.SQLiteDatabase;
 using Gile.AutoCAD.R25.Geometry;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,7 @@ namespace BIMDemo.DemoLayers
             {
                 using (var tr = doc.TransactionManager.StartTransaction())
                 {
+                    DemoDbContext.EnsureDatabaseCreated();
 
                     var typedValues = new List<TypedValue>()
                     {

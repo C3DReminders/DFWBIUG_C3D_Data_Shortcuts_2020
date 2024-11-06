@@ -31,6 +31,8 @@ namespace BIMDemo.DemoLayers
                 {
                     DemoDbContext.EnsureDatabaseCreated();
 
+                    var dbCont = new DemoDbContext();
+
                     var typedValues = new List<TypedValue>()
                     {
                         new TypedValue((int)DxfCode.Operator, "<OR"),

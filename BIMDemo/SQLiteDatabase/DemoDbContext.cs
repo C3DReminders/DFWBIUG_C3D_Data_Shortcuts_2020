@@ -42,6 +42,7 @@ namespace BIMDemo.SQLiteDatabase
                 {
                     openFileDialog.Filter = "SQLite files (*.db)|*.db|All files (*.*)|*.*";
                     openFileDialog.Title = "Select SQLite Database File";
+                    openFileDialog.CheckFileExists = false;
 
                     if (openFileDialog.ShowDialog() == DialogResult.OK)
                     {

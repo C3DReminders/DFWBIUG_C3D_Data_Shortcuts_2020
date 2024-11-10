@@ -31,6 +31,9 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <Label Content="Filter" 
@@ -40,8 +43,23 @@
                          Grid.Column="1" 
                          Margin="5" />
 
+                <Label Content="Suffix"
+                       Grid.Column="2" />
+
+                <TextBox Text="{Binding Path=Suffix, UpdateSourceTrigger=PropertyChanged}"
+                         Grid.Column="3"
+                         Margin="5" />
+
+                <Button Content="Apply Suffix"
+                        Grid.Column="4"
+                        Command="{Binding Path=ApplySuffixCommand}"
+                        Width="80"
+                        Margin="5"
+                        HorizontalAlignment="Left"
+                        ToolTip="Apply suffix to selected mappings." />
+
                 <Button Content="Import layers"
-                        Grid.Column="2"
+                        Grid.Column="5"
                         Command="{Binding Path=ImportLayersCommand}"
                         Width="80"
                         Margin="5"

@@ -10,6 +10,7 @@ using BIMDemo.UI.ViewModels;
 using BIMDemo.UI.Views;
 using Gile.AutoCAD.R25.Geometry;
 using Microsoft.EntityFrameworkCore;
+using Quux.AcadUtilities.CommandParameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -93,7 +94,10 @@ namespace BIMDemo.DemoLayers
 
                     foreach (var layerUnprocessed in layersUnprocessed)
                     {
-                        var layerMappingVM = new DemoLayerMapVM(settingsMdl, layerUnprocessed.Key, settingsMdl.Layers.FirstOrDefault());
+                        var layerMappingVM = new DemoLayerMapVM(settingsMdl,
+                                                                layerUnprocessed.Key,
+                                                                settingsMdl.Layers.OrderBy(x => layerUnprocessed.Key.LevenshteinDistanceOmitMatch(x.Name))
+                                                                                  .FirstOrDefault());
 
                         settingsMdl.LayerMappings.Add(layerMappingVM);
                     }
@@ -106,7 +110,7 @@ namespace BIMDemo.DemoLayers
                         return;
                     }
 
-                    settingsMdl.UpdateDatabase(false, dbContext);
+                    settingsMdl.UpdateDatabase(dbContext);
 
                     ProcessLayerMappings(db, layersUnprocessed, settingsMdl.LayerMappings.ToList());
 
@@ -164,7 +168,7 @@ namespace BIMDemo.DemoLayers
                         return;
                     }
 
-                    settingsMdl.UpdateDatabase(true, dbContext);
+                    settingsMdl.UpdateDatabase(dbContext);
 
                     tr.Commit();
                 }

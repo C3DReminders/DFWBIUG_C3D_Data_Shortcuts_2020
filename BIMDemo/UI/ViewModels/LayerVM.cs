@@ -37,6 +37,13 @@ namespace BIMDemo.UI.ViewModels
             Name = name;
             Description = description;
             Template = template;
+
+            Layer = new Layer()
+            {
+                Name = name,
+                Description = description,
+                TemplatePath = ""
+            };
         }
 
         public LayerVM(Layer layer)

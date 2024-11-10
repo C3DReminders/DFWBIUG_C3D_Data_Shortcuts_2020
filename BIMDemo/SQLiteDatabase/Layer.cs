@@ -28,7 +28,7 @@ namespace BIMDemo.SQLiteDatabase
 
         public ICollection<DemoLayerMap> DemoLayerMaps { get; set; }
 
-        public static Layer GetLayer(LayerTableRecord layerTblRec)
+        public static Layer GetLayer(LayerTableRecord layerTblRec, string templatePath)
         {
             var layer = new Layer()
             {
@@ -42,11 +42,27 @@ namespace BIMDemo.SQLiteDatabase
                 LineWeight = (int)layerTblRec.LineWeight,
                 MaterialName = layerTblRec.MaterialId.IsNull ? "" :
                                 (layerTblRec.MaterialId.GetObject(OpenMode.ForRead) as Material).Name,
-                TemplatePath = HostApplicationServices.WorkingDatabase.Filename,
-                PlotStyleName = layerTblRec.PlotStyleName,
-                LinetypeName = (layerTblRec.LinetypeObjectId.GetObject(OpenMode.ForRead) as LinetypeTableRecord).Name,
-                TransparencyAlpha = layerTblRec.Transparency.Alpha
+                TemplatePath = templatePath,
+                LinetypeName = (layerTblRec.LinetypeObjectId.GetObject(OpenMode.ForRead) as LinetypeTableRecord).Name                
             };
+
+            try
+            {
+                layer.PlotStyleName = layerTblRec.PlotStyleName;
+            }
+            catch (Exception)
+            {
+
+            }
+
+            try
+            {
+                layer.TransparencyAlpha = layerTblRec.Transparency.IsByAlpha ? layerTblRec.Transparency.Alpha : (byte)255;
+            }
+            catch (Exception)
+            {
+
+            }
 
             GetColorInformation(layer, layerTblRec.Color);
 
@@ -64,5 +80,7 @@ namespace BIMDemo.SQLiteDatabase
             // To do, make this return a mapping for value for non color index methods. 
             layer.ColorMap = "";
         }
+
     }
+
 }

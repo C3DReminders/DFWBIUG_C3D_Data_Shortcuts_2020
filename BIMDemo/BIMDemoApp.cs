@@ -34,7 +34,6 @@ namespace BIMDemo
                 dllFolder = dllFolder.Substring(6);
                 var dllFullPath = Path.Combine(dllFolder, @"e_sqlite3.dll");
                 SQLiteLoader.LoadSQLite(dllFullPath); // Specify your SQLite DLL path here
-                SQLitePCL.raw.SetProvider(new SQLitePCL.SQLite3Provider_e_sqlite3());
             }
             catch (Exception ex)
             {

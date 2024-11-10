@@ -6,7 +6,10 @@ using Autodesk.Civil.DatabaseServices;
 using BIMDemo.Extensions;
 using BIMDemo.Extensions.Featurelines;
 using BIMDemo.SQLiteDatabase;
+using BIMDemo.UI.ViewModels;
+using BIMDemo.UI.Views;
 using Gile.AutoCAD.R25.Geometry;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +26,7 @@ namespace BIMDemo.DemoLayers
         {
             // Your code here
             var doc = Application.DocumentManager.MdiActiveDocument;
+            var db = doc.Database;
             var ed = doc.Editor;
 
             try
@@ -31,7 +35,7 @@ namespace BIMDemo.DemoLayers
                 {
                     DemoDbContext.EnsureDatabaseCreated();
 
-                    var dbCont = new DemoDbContext();
+                    var dbContext = new DemoDbContext();
 
                     var typedValues = new List<TypedValue>()
                     {
@@ -58,7 +62,53 @@ namespace BIMDemo.DemoLayers
 
                     ed.WriteMessage("\nPolyline Length: " + poly.Length);
 
-                    ProcessDatabaseObjects(tr, poly);
+                    ProcessDatabaseObjects(tr, poly, out Dictionary<string, List<ObjectId>> layersUnprocessed);
+
+                    var settingsMdl = new DemoLayersSettingsVM();
+
+                    var layersMappings = dbContext.DemoLayerMaps.Where(x => layersUnprocessed.Keys.Contains(x.LayerName))
+                                                                .Include(x => x.Layer)
+                                                                .Select(x => new DemoLayerMapVM(settingsMdl, x, dbContext.Layers.Where(l => x.LayerId == l.Id).FirstOrDefault()))
+                                                                .ToList();
+
+                    ProcessLayerMappings(db, layersUnprocessed, layersMappings);
+
+                    if (!layersUnprocessed.Any())
+                    {
+                        tr.Commit();
+                        return;
+                    }
+
+                    // Get the layers from the database.
+                    var layers = dbContext.Layers
+                                          .OrderBy(x => x.Name)
+                                          .ToList()
+                                          .Select(x => new LayerVM(x))
+                                          .ToList();
+
+                    // Get the layers in the current drawing.
+                    layers.AddRange(LayerVM.GetLayers(layers.Select(x => x.Name).ToList()));
+
+                    settingsMdl.AddLayers(layers);
+
+                    foreach (var layerUnprocessed in layersUnprocessed)
+                    {
+                        var layerMappingVM = new DemoLayerMapVM(settingsMdl, layerUnprocessed.Key, settingsMdl.Layers.FirstOrDefault());
+
+                        settingsMdl.LayerMappings.Add(layerMappingVM);
+                    }
+
+                    var settingsWndw = new DemoLayersSettingsWindow(settingsMdl);
+
+                    if (!Application.ShowModalWindow(Application.MainWindow.Handle, settingsWndw, true) == true)
+                    {
+                        tr.Commit();
+                        return;
+                    }
+
+                    settingsMdl.UpdateDatabase(false, dbContext);
+
+                    ProcessLayerMappings(db, layersUnprocessed, settingsMdl.LayerMappings.ToList());
 
                     tr.Commit();
                 }
@@ -69,10 +119,94 @@ namespace BIMDemo.DemoLayers
             }
         }
 
-        public const string DemoSuffix = "-DEMO";
-
-        private static void ProcessDatabaseObjects(Transaction tr, Polyline polyArea)
+        [CommandMethod("DemoLayersMapping")]
+        public static void DemolitionMappingCommand()
         {
+            // Your code here
+            var doc = Application.DocumentManager.MdiActiveDocument;
+            var db = doc.Database;
+            var ed = doc.Editor;
+
+            try
+            {
+                using (var tr = doc.TransactionManager.StartTransaction())
+                {
+                    DemoDbContext.EnsureDatabaseCreated();
+
+                    var dbContext = new DemoDbContext();
+
+                    var settingsMdl = new DemoLayersSettingsVM();
+
+                    var layers = dbContext.Layers
+                                          .OrderBy(x => x.Name)
+                                          .ToList()
+                                          .Select(x => new LayerVM(x))
+                                          .ToList();
+
+                    var layersMappings = dbContext.DemoLayerMaps.ToList()
+                                                                .Select(x => new DemoLayerMapVM(settingsMdl, x, layers.Where(l => l.Id == x.LayerId).FirstOrDefault()))
+                                                                .ToList();
+
+                    // Get the layers in the current drawing.
+                    layers.AddRange(LayerVM.GetLayers(layers.Select(x => x.Name).ToList()));
+
+                    settingsMdl.AddLayers(layers);
+                    foreach (var layerMapping in layersMappings)
+                    {
+                        settingsMdl.LayerMappings.Add(layerMapping);
+                    }
+                    
+                    var settingsWndw = new DemoLayersSettingsWindow(settingsMdl);
+
+                    if (Application.ShowModalWindow(Application.MainWindow.Handle, settingsWndw, true) != true)
+                    {
+                        tr.Commit();
+                        return;
+                    }
+
+                    settingsMdl.UpdateDatabase(true, dbContext);
+
+                    tr.Commit();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                ed.WriteMessage("\nError: " + ex.Message + "\n");
+            }
+        }
+
+        private static void ProcessLayerMappings(Database db, Dictionary<string, List<ObjectId>> layersUnprocessed, List<DemoLayerMapVM> layersMappings)
+        {
+            foreach (var layerMapping in layersMappings)
+            {
+                if (layerMapping?.Layer?.Name is null)
+                {
+                    continue;
+                }
+
+                if (!layersUnprocessed.ContainsKey(layerMapping.LayerName))
+                {
+                    // The key no longer exists, there is probably two mappings in the
+                    // database.
+                    continue;
+                }
+
+                var layerId = db.GetLayerId(layerMapping.Layer.Name, out bool _);
+
+                foreach (var objectIdsToProcess in layersUnprocessed[layerMapping.LayerName])
+                {
+                    var entity = objectIdsToProcess.GetObject(OpenMode.ForWrite) as Entity;
+                    entity.LayerId = layerId;
+                }
+
+                layersUnprocessed.Remove(layerMapping.LayerName);
+            }
+        }
+
+        private static void ProcessDatabaseObjects(Transaction tr, Polyline polyArea, out Dictionary<string, List<ObjectId>> layersUnprocessed)
+        {
+            layersUnprocessed = new Dictionary<string, List<ObjectId>>();
+
             var db = Application.DocumentManager.MdiActiveDocument.Database;
 
             var blkTable = tr.GetObject(db.BlockTableId, OpenMode.ForRead) as BlockTable;
@@ -87,7 +221,15 @@ namespace BIMDemo.DemoLayers
                     continue;
                 }
 
+                if (objId.ObjectClass.DxfName.Equals("ACAD_PROXY_ENTITY", StringComparison.OrdinalIgnoreCase))
+                {
+                    BIMDemoApp.WriteMessage("Found proxy entity, skipping.");
+                    continue;
+                }
+
                 processedObjIds.Add(objId);
+
+                var layersLocked = new HashSet<ObjectId>();
 
                 try
                 {
@@ -110,6 +252,15 @@ namespace BIMDemo.DemoLayers
                         continue;
                     }
 
+                    if (layersLocked.Contains(entity.LayerId) || entity.IsLayerLocked())
+                    {
+                        BIMDemoApp.WriteMessage(string.Join("\t", "\tLayer is locked, skipping object.",
+                                                "Layer:",
+                                                entity.Layer,
+                                                objId.ObjectClass.DxfName));
+                        continue;
+                    }
+
                     if (!polyArea.IsOverlapGeometricExtents(entity))
                     {
                         continue;
@@ -117,7 +268,7 @@ namespace BIMDemo.DemoLayers
 
                     if (polyArea.TryGetIntersectionPoints(entity, out Point3dCollection intersectPts))
                     {
-                        ProcessIntersectionPoints(db, polyArea, entity, intersectPts, out List<ObjectId> addedObjIds);
+                        ProcessIntersectionPoints(db, polyArea, entity, intersectPts, layersUnprocessed, out List<ObjectId> addedObjIds);
                         processedObjIds.AddRange(addedObjIds);
                         continue;
                     }
@@ -132,7 +283,7 @@ namespace BIMDemo.DemoLayers
                         }
                     }
 
-                    ConvertToDemoLayer(db, entity);
+                    CollectLayerInformation(db, entity, layersUnprocessed);
                 }
                 catch (System.Exception ex)
                 {
@@ -141,20 +292,20 @@ namespace BIMDemo.DemoLayers
             }
         }
 
-        private static void ConvertToDemoLayer(Database db, Entity entity)
+        private static void CollectLayerInformation(Database db, Entity entity, Dictionary<string, List<ObjectId>> layersUnprocessed)
         {
             var layerName = entity.Layer;
 
-            if (layerName.EndsWith(DemoSuffix))
+            if (!layersUnprocessed.ContainsKey(layerName))
             {
-                return;
+                layersUnprocessed[layerName] = new List<ObjectId>();
             }
 
-            entity.UpgradeOpen();
-            entity.LayerId = db.GetLayerId(layerName + DemoSuffix, out bool _);
+            layersUnprocessed[layerName].Add(entity.ObjectId);
         }
 
-        private static void ProcessIntersectionPoints(Database db, Polyline polyArea, Entity entity, Point3dCollection intersectPts, out List<ObjectId> addedObjIds)
+        private static void ProcessIntersectionPoints(Database db, Polyline polyArea, Entity entity, Point3dCollection intersectPts, 
+                                                      Dictionary<string, List<ObjectId>> layersUnprocessed, out List<ObjectId> addedObjIds)
         {
             addedObjIds = new List<ObjectId>();
             if (entity is FeatureLine featureLine)
@@ -176,7 +327,7 @@ namespace BIMDemo.DemoLayers
                     {
                         case PolylineExtension.PointContainment.Inside:
                         case PolylineExtension.PointContainment.OnBoundary:
-                            ConvertToDemoLayer(db, flSegment);
+                            CollectLayerInformation(db, flSegment, layersUnprocessed);
                             break;
                         case PolylineExtension.PointContainment.OutSide:
                             break;
@@ -195,7 +346,7 @@ namespace BIMDemo.DemoLayers
 
                 if (dblCollection.Count == 0)
                 {
-                    ConvertToDemoLayer(db, entity);
+                    CollectLayerInformation(db, entity, layersUnprocessed);
                     return;
                 }
 
@@ -213,7 +364,7 @@ namespace BIMDemo.DemoLayers
                         case PolylineExtension.PointContainment.OnBoundary:
                             var splitObjId = splitCurve.AddToModelSpace();
                             addedObjIds.Add(splitObjId);
-                            ConvertToDemoLayer(db, splitCurve);
+                            CollectLayerInformation(db, splitCurve, layersUnprocessed);
                             break;
                         case PolylineExtension.PointContainment.OutSide:
                             var outsideSplitObjId = splitCurve.AddToModelSpace();
@@ -229,7 +380,7 @@ namespace BIMDemo.DemoLayers
 
             }
 
-            ConvertToDemoLayer(db, entity);
+            CollectLayerInformation(db, entity, layersUnprocessed);
         }
     }
 }

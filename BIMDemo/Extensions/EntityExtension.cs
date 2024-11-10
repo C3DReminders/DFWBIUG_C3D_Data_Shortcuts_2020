@@ -57,5 +57,11 @@ namespace BIMDemo.Extensions
 
             return objId;
         }
+
+        public static bool IsLayerLocked(this Entity ent)
+        {
+            var lyrTblRec = ent.LayerId.GetObject(OpenMode.ForRead) as LayerTableRecord;
+            return lyrTblRec.IsLocked;
+        }
     }
 }

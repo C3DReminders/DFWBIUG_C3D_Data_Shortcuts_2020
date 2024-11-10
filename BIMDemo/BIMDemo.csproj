@@ -21,6 +21,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
 	  <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="8.0.10" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.10" />
@@ -59,10 +60,6 @@
       <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2025\C3D\AeccDbMgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="UI\Views\" />
   </ItemGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">

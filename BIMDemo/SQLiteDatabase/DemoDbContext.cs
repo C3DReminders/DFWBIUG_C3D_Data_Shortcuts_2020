@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace BIMDemo.SQLiteDatabase
 {
-    internal class DemoDbContext : DbContext
+    public class DemoDbContext : DbContext
     {
         public static string DatabaseFullPath { get; set; }
         public const string DatabaseFullPathKey = "DatabaseFullPathKey";

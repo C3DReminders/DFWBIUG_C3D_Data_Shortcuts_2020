@@ -60,11 +60,15 @@
       <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2025\C3D\AeccDbMgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="AecPropDataMgd">
+      <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2025\ACA\AecPropDataMgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 		<Exec Command="if $(ConfigurationName) == Debug copy /Y &quot;$(TargetDir)*&quot; &quot;C:\ProgramData\Autodesk\ApplicationPlugins\BIMDemo.Bundle\2025\&quot;&#xD;&#xA;if $(ConfigurationName) == Release copy /Y &quot;$(TargetDir)*&quot; &quot;C:\Users\chris\Dropbox\CivilReminders\Apps-C3DR\BIMDemo\BIMDemo.Bundle\2025\&quot;" />
-		<Exec Command="if $(ConfigurationName) == Debug copy /Y &quot;$(TargetDir)runtimes\win-x64\native\e_sqlite3.dll&quot; &quot;C:\ProgramData\Autodesk\ApplicationPlugins\BIMDemo.Bundle\2025\&quot;&#xD;&#xA;if $(ConfigurationName) == Release copy /Y &quot;$(TargetDir)runtime\win-x64\native*&quot; &quot;C:\Users\chris\Dropbox\CivilReminders\Apps-C3DR\BIMDemo\BIMDemo.Bundle\2025\&quot;" />
+		<Exec Command="if $(ConfigurationName) == Debug copy /Y &quot;$(TargetDir)runtimes\win-x64\native\e_sqlite3.dll&quot; &quot;C:\ProgramData\Autodesk\ApplicationPlugins\BIMDemo.Bundle\2025\&quot;&#xD;&#xA;if $(ConfigurationName) == Release copy /Y &quot;$(TargetDir)runtimes\win-x64\native\e_sqlite3.dll&quot; &quot;C:\Users\chris\Dropbox\CivilReminders\Apps-C3DR\BIMDemo\BIMDemo.Bundle\2025\&quot;" />
 	</Target>
 	
 </Project>

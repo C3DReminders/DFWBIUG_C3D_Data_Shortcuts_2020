@@ -16,13 +16,22 @@ namespace BIMDemo.SQLiteDatabase
         public const string DatabaseFullPathKey = "DatabaseFullPathKey";
         public DbSet<DemoLayerMap> DemoLayerMaps { get; set; }
         public DbSet<Layer> Layers { get; set; }
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<Employee> Employees { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<DemoLayerMap>()
-                .HasOne(d => d.Layer)
-                .WithMany(l => l.DemoLayerMaps)
-                .HasForeignKey(d => d.LayerId);
+                        .HasOne(d => d.Layer)
+                        .WithMany(l => l.DemoLayerMaps)
+                        .HasForeignKey(d => d.LayerId);
+
+            modelBuilder.Entity<Layer>();
+
+            modelBuilder.Entity<Project>()
+                        .HasOne(p => p.ProjectManager)
+                        .WithMany()
+                        .HasForeignKey(p => p.ProjectManagerId);
 
             base.OnModelCreating(modelBuilder);
         }
